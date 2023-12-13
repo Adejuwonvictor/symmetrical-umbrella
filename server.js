@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false}));
 
 mongoose
     .connect(
-        "mongodb+srv://victor:iloveyou5678@cluster0.azsei2w.mongodb.net/"
+        "mongodb+srv://victor:iloveyou5678@cluster0.azsei2w.mongodb.net/",
         {useNewUrlParser: true, useUnifiedTopology: true }
 
     )
@@ -34,7 +34,7 @@ mongoose
         res.send("upload file");
     });
 
-    app.post('/upload', (req,res)=>{
+    app.post('/upload', (req,res) => {
         upload(req,res,(err)=>{
             if(err){
                 console.log(err)
