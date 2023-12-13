@@ -18,38 +18,38 @@ mongoose
     .then(() => console.log("db is connected"))
     .catch((err) => console.log(err, "it has an error"));
 
-    //storage
-    const  Storage = multer.diskStorage({
-        destination:'uploads' , 
-        filename:(req,file,cb) => {
-            cb(null, file.originalname);
+//storage
+const  Storage = multer.diskStorage({
+    destination:'uploads' , 
+    filename:(req,file,cb) => {
+        cb(null, file.originalname);
+    },
+});
+
+const upload = multer({
+    storage:Storage
+}).single('testImage')
+
+app.get("/", (req, res) => {
+    res.send("upload file");
+});
+
+app.post('/upload', (req,res) => {
+    upload(req,res,(err)=>{
+        if(err){
+            console.log(err)
+        }
+        else{
+            const newImage = new ImageModel({
+                name: req.body.name,
+                image:{
+                    data:req.file.fiilename,
+                    contentType:'image/png'
+                }
+            })
+            newImage.save().
+            then(() => res.send('successfully uploaded'))
+            .catch((err) => console.log(err));
         }
     })
-
-    const upload = multer({
-        storage:Storage
-    }).single('testImage')
-
-    app.get("/", (req, res) => {
-        res.send("upload file");
-    });
-
-    app.post('/upload', (req,res) => {
-        upload(req,res,(err)=>{
-            if(err){
-                console.log(err)
-            }
-            else{
-                const newImage = new ImageModel({
-                    name: req.body.name
-                    image:{
-                        data:req.file.fiilename,
-                        contentType:'image/png'
-                    }
-                })
-                newImage.save().
-                then(() => res.send('successfully uploaded'))
-                .catch((err) => console.log(err));
-            }
-        })
-    }) 
+}) 
