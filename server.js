@@ -47,8 +47,8 @@ app.post('/upload', (req,res) => {
                     contentType:'image/png'
                 }
             })
-            newImage.save().
-            then(() => res.send('successfully uploaded'))
+            newImage.save()
+            .then(() => res.send('successfully uploaded'))
             .catch((err) => console.log(err));
         }
     })
