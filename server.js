@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false}));
 
 mongoose
     .connect(
-        "mongodb+srv://victor:iloveyou5678@cluster0.azsei2w.mongodb.net/",
+        "mongodb+srv://victor:iloveyou5678@cluster0.azsei2w.mongodb.net/upload",
         {useNewUrlParser: true, useUnifiedTopology: true }
 
     )
@@ -20,22 +20,22 @@ mongoose
 
 //storage
 const  Storage = multer.diskStorage({
-    destination:'uploads' , 
-    filename:(req,file,cb) => {
+    destination:"uploads", 
+    filename:(req, file, cb) => {
         cb(null, file.originalname);
     },
 });
 
 const upload = multer({
-    storage:Storage
+    storage: Storage
 }).single('testImage')
 
 app.get("/", (req, res) => {
     res.send("upload file");
 });
 
-app.post('/upload', (req,res) => {
-    upload(req,res,(err)=>{
+app.post('/upload', (req, res) => {
+    upload(req, res, (err) => {
         if(err){
             console.log(err)
         }
@@ -43,7 +43,7 @@ app.post('/upload', (req,res) => {
             const newImage = new ImageModel({
                 name: req.body.name,
                 image:{
-                    data:req.file.fiilename,
+                    data:req.file.filename,
                     contentType:'image/png'
                 }
             })
@@ -52,4 +52,7 @@ app.post('/upload', (req,res) => {
             .catch((err) => console.log(err));
         }
     })
-}) 
+})
+app.listen(port, () => {
+    console.log(`successfully running at http://localhost:${port}`);
+});
